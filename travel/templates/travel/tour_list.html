@@ -1,0 +1,114 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+
+    <!-- bradcam_area  -->
+    <div class="bradcam_area bradcam_bg_2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Destinations</h3>
+                        <p>Where ever you want to go to, we can serve it</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ bradcam_area  -->
+
+    <!-- where_togo_area_start  -->
+    <div class="where_togo_area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3">
+                    <div class="form_area">
+                        <h3>Where you want to go?</h3>
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="search_wrap">
+                        <form class="search_form" action="{% url 'tours' %}" method="get">
+                            <div class="input_field">
+                                <input name="place" type="text" placeholder="Place" value="">
+                            </div>
+                            <div class="input_field">
+                                <select name="duration">
+                                    <option data-display="Duration" value="0" selected>Duration</option>
+                                    <option value="1" > 1</option>
+                                    <option value="2"> 2</option>
+                                    <option value="3"> 3</option>
+                                    <option value="4"> 4</option>
+                                </select>
+                            </div>
+                            <div class="input_field">
+                                <select name="cost">
+                                    <option data-display="Cost" value="0">Cost</option>
+                                    <option value="500"> <500$</option>
+                                    <option value="2000"> <2000$</option>
+                                    <option value="5000"> <2000$</option>
+                                </select>
+                            </div>
+                            <div class="search_btn">
+                                <button class="boxed-btn4 " type="submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- where_togo_area_end  -->
+
+
+    <div class="popular_places_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        {% if tour_list %}
+                            {% for tour in tour_list %}
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="single_place">
+                                        <div class="thumb">
+                                            {% with tour.image_set.all|first as image %}
+                                                <img src="../../../media/{{ image.url }}">
+                                            {% endwith %}
+                                            <a href="" class="prise">${{ tour.base_price }}</a>
+                                        </div>
+                                        <div class="place_info">
+                                            <a href="{{ tour.get_absolute_url }}"><h3>{{ tour.title }} </h3></a>
+                                            <p>{{ tour.start_location }} - {{ tour.destination }}</p>
+                                            <div class="rating_days d-flex justify-content-between">
+                                        <span class="d-flex justify-content-center align-items-center">
+                                            <i class="fa fa-star"></i>
+                                            <a>{{ tour.rating|floatformat }}</a>
+                                            <a href="#">{{ tour.review_set.count }} reviews</a>
+                                        </span>
+                                                <div class="days">
+                                                    <i class="fa fa-clock-o"></i>
+                                                    <a href="#">{{ tour.date }} days</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="more_place_btn text-center">
+                                <a class="boxed-btn4" href="#">More Places</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

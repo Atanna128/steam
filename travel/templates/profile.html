@@ -1,0 +1,147 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="container" style="margin-bottom:30px">
+<div class="row">
+    {% load i18n %}
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="{% url 'profile' %}" role="form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% if field.errors %}{{field.name}}{% endif %}
+                                {% for error in field.errors %}
+                                <div class="form-alert text-center mb-2 w-100">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <div class="form-alert text-center mb-2 w-100">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="card-title mb-6">
+                            <div class="d-flex justify-content-start">
+                                <div class="image-container">
+                                    {% if user.profile.avatar %}
+                                        <img src="{{ user.profile.avatar.url }}" id="imgProfile" name = "avatar" class="img-circle img-thumbnail" style="width: 250px; height: 250px; object-fit: contain" alt="avatar" >
+                                    {% else %}
+                                        <img src="{% static '/img/userde.JPG' %}" id="imgProfile" name = "avatar" class="img-circle img-thumbnail" style="width: 250px; height: 250px; object-fit: contain" alt="avatar" >
+                                     {% endif %}
+
+                                    <div class="middle">
+                                        <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />
+                                        <input type="file" style="display: none;" id="profilePicture" name="avatar" />
+                                    </div>
+                                </div>
+                                <div class="userData ml-3" style="margin-top:50px; width: 450px">
+                                    <h2 style="margin-left:180px">{{ user.get_username }}</h3>
+                                    <div class="row overview" style="margin-top:50px">
+                                        <div class="col-md-4 user-pad text-center">
+                                            <h4>{% trans 'FOLLOWERS' %}</h4>
+                                            <h5>{{user.followers.count}}</h5>
+                                        </div>
+                                        <div class="col-md-4 user-pad text-center">
+                                            <h4>{% trans 'FOLLOWING' %}</h4>
+                                            <h5>{{user.following.count}}</h5>
+                                        </div>
+                                        <div class="col-md-4 user-pad text-center">
+                                            <h4>{% trans 'REVIEWS' %}</h4>
+                                            <h5>{{review_num}}</h5>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">{% trans 'Basic Info' %}</a>
+                                    </li>
+
+                                </ul>
+                                <div class="tab-content ml-1" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+
+
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">{% trans 'User Name' %}</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                {{ user.get_username }}
+
+                                            </div>
+
+                                        </div>
+                                        <hr />
+
+
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">{% trans 'Email' %}</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                {{ user.email }}
+                                                <div class="group-input edit_profile" style="display:none; margin-top:10px">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">{% trans 'Address' %}</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                <p class="no-edit" >{{ user.profile.address }}</p>
+                                                <div class="group-input edit_profile" style="display:none; margin-top:10px">
+                                                    <input type="text" name="address" id="address" class="form-control" value="{{ user.profile.address }}" />
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-3 col-md-2 col-5">
+                                                <label style="font-weight:bold;">{% trans 'Phone' %}</label>
+                                            </div>
+                                            <div class="col-md-8 col-6">
+                                                <p class="no-edit">{{ user.profile.phone }}</p>
+                                                <div class="group-input edit_profile" style="display:none; margin-top:10px">
+                                                    <input type="text" name="phone" id="phone" class="form-control" value="{{ user.profile.phone }}" />
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary edit" style="margin-top: 10px;"><span>{% trans 'Edit' %}</span></button>
+                        <button type="submit" class="btn btn-primary save_btn" style="margin-top: 10px;"><span>{% trans 'Save' %}</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
